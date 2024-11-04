@@ -1,31 +1,30 @@
-import YouTubePlayer from "./components/youtube-player/YouTubePlayer.tsx";
-import SideMenu from "./components/side-menu/SideMenu.tsx";
-import { useQuery } from "react-query";
-import { getPlaylists } from "./services/Playlists.service.ts";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import HomeWrapper from "./pages/home/HomeWrapper.tsx";
+import Login from "./pages/Login.tsx";
+import { TokenResponse } from "@react-oauth/google";
 
-function App() {
-  const playlistId = "PLUl4u3cNGP62EXoZ4B3_Ob7lRRwpGQxkb";
+const App = () => {
+  // might need to store somewhere else ...
+  const [bearerToken, setBearerToken] = useState<string | null>(null);
 
-  const {
-    data: playlistResults,
-    error,
-    isLoading,
-  } = useQuery("", async () => getPlaylists("invalid-token"));
-
-  if (error) {
-    return <>{`Failed loading playlists! Error: ${error}`}</>;
-  }
-
-  if (isLoading || !playlistResults) {
-    return <>Loading</>;
-  }
+  const tokenHandler = (tokenResponse: TokenResponse) => {
+    setBearerToken(tokenResponse.access_token);
+  };
 
   return (
-    <div className="flex h-screen">
-      <SideMenu playlistResults={playlistResults} />
-      <YouTubePlayer playlistId={playlistId} />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          index
+          path="/"
+          element={<HomeWrapper bearerToken={bearerToken} />}
+        />
+        <Route path="/login" element={<Login tokenHandler={tokenHandler} />} />
+        <Route path="/*" element={<div>Catch all!</div>} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
