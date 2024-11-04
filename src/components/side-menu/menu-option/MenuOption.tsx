@@ -1,10 +1,15 @@
 export type MenuOptionProps = {
+  playlistId: string;
   title: string;
+  handleSelectPlaylist: (playlistId: string) => void;
 };
 
 const MenuOption = (props: MenuOptionProps) => {
   return (
-    <div className="m-1 flex h-24 items-center rounded-sm bg-white p-4 shadow-md">
+    <div
+      onClick={() => props.handleSelectPlaylist(props.playlistId)}
+      className="m-1 flex h-24 items-center rounded-sm bg-white p-4 shadow-md"
+    >
       <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center">
         <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center bg-amber-200"></div>
       </div>

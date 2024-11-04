@@ -29,7 +29,6 @@ const Login = (props: LoginProps) => {
 
   return (
     <div>
-      Login!
       <button onClick={() => login()}>Login to Google!</button>
       {errorMessage && <div>{errorMessage}</div>}
     </div>

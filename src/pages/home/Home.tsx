@@ -1,10 +1,14 @@
 import { useQuery } from "react-query";
-import { getPlaylists } from "../../services/Playlists.service.ts";
+import {
+  getPlaylists,
+  PlaylistResult,
+} from "../../services/Playlists.service.ts";
 import SideMenu from "../../components/side-menu/SideMenu.tsx";
+import { useState } from "react";
 import YouTubePlayer from "../../components/youtube-player/YouTubePlayer.tsx";
 
 const Home = (props: { bearerToken: string }) => {
-  const playlistId = "PLUl4u3cNGP62EXoZ4B3_Ob7lRRwpGQxkb";
+  const [playlistId, setPlaylistId] = useState<string | null>(null);
 
   const {
     data: playlistResults,
@@ -23,11 +27,42 @@ const Home = (props: { bearerToken: string }) => {
     return <>Loading</>;
   }
 
+  const pickPlaylistId = () => {
+    if (playlistId !== null) {
+      return playlistId;
+    }
+
+    return playlistResults![0].id;
+  };
+
+  const handleSelectPlaylist = (playlistId: string) => {
+    setPlaylistId(playlistId);
+  };
+
+  const finalPlaylistId = pickPlaylistId();
+
+  const getThumbnailVideoIdByPlaylistId = (
+    playlistResults: PlaylistResult[],
+    playlistId: string,
+  ): string => {
+    return playlistResults.find((result) => result.id === playlistId)!
+      .thumbnailVideoId;
+  };
+
   return (
     <div>
       <div className="flex h-screen">
-        <SideMenu playlistResults={playlistResults} />
-        <YouTubePlayer playlistId={playlistId} />
+        <SideMenu
+          playlistResults={playlistResults}
+          handleSelectPlaylist={handleSelectPlaylist}
+        />
+        <YouTubePlayer
+          playlistId={finalPlaylistId}
+          thumbnailVideoId={getThumbnailVideoIdByPlaylistId(
+            playlistResults,
+            finalPlaylistId,
+          )}
+        />
       </div>
     </div>
   );

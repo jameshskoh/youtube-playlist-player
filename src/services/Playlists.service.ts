@@ -50,13 +50,13 @@ export type PlaylistResult = {
   channelId: string;
   channelTitle: string;
   mediumThumbnail: ThumbnailInfo;
+  thumbnailVideoId: string;
   contentDetails: {
     itemCount: number;
   };
 };
 
-const youtubePlaylistUrl =
-  "https://youtube.googleapis.com/youtube/v3/playlists?part=snippet%2CcontentDetails&maxResults=25&mine=true";
+const youtubePlaylistUrl = `https://youtube.googleapis.com/youtube/v3/playlists?part=snippet%2CcontentDetails&maxResults=100&mine=true`;
 
 export const getPlaylists = async (token: string) => {
   return axios
@@ -78,9 +78,17 @@ const formatPlaylistResult = (dto: PlaylistDto): PlaylistResult[] => {
       channelId: item.snippet.channelId,
       channelTitle: item.snippet.channelTitle,
       mediumThumbnail: item.snippet.thumbnails.medium,
+      thumbnailVideoId: extractVideoId(item.snippet.thumbnails.medium.url),
       contentDetails: {
         itemCount: item.contentDetails.itemCount,
       },
     };
   });
+};
+
+// video thumbnail URL format: https://i.ytimg.com/vi/{video-id}/{image-size-format}.jpg
+const extractVideoId = (videoThumbnailUrl: string) => {
+  const suffixPos = videoThumbnailUrl.indexOf("/mqdefault.jpg");
+
+  return videoThumbnailUrl.slice(23, suffixPos);
 };
