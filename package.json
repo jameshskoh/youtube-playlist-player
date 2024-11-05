@@ -13,7 +13,9 @@
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.1",
     "@react-oauth/google": "^0.12.1",
+    "@types/js-cookie": "^3.0.6",
     "axios": "^1.7.7",
+    "js-cookie": "^3.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-lite-youtube-embed": "^2.4.0",
