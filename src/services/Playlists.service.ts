@@ -56,6 +56,7 @@ export type PlaylistResult = {
   };
 };
 
+// NOTE limit to 100 playlists, consider pagination support in the future
 const youtubePlaylistUrl = `https://youtube.googleapis.com/youtube/v3/playlists?part=snippet%2CcontentDetails&maxResults=100&mine=true`;
 
 export const getPlaylists = async (token: string) => {
@@ -86,9 +87,11 @@ const formatPlaylistResult = (dto: PlaylistDto): PlaylistResult[] => {
   });
 };
 
-// video thumbnail URL format: https://i.ytimg.com/vi/{video-id}/{image-size-format}.jpg
-const extractVideoId = (videoThumbnailUrl: string) => {
-  const suffixPos = videoThumbnailUrl.indexOf("/mqdefault.jpg");
+/**
+ * Expected video thumbnail URL format: https://i.ytimg.com/vi/{video-id}/{image-size-format}.jpg
+ */
+const extractVideoId = (mediumVideoThumbnailUrl: string) => {
+  const suffixPos = mediumVideoThumbnailUrl.indexOf("/mqdefault.jpg");
 
-  return videoThumbnailUrl.slice(23, suffixPos);
+  return mediumVideoThumbnailUrl.slice(23, suffixPos);
 };

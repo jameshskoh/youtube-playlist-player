@@ -6,9 +6,10 @@ export type LoginProps = {
   tokenHandler: (tokenResponse: TokenResponse) => void;
 };
 
+const youtubeReadonlyScope = "https://www.googleapis.com/auth/youtube.readonly";
+
 const Login = (props: LoginProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const navigate = useNavigate();
 
   const loggedInHandler = (tokenResponse: TokenResponse) => {
@@ -22,7 +23,7 @@ const Login = (props: LoginProps) => {
   };
 
   const login = useGoogleLogin({
-    scope: "https://www.googleapis.com/auth/youtube.readonly",
+    scope: youtubeReadonlyScope,
     onSuccess: loggedInHandler,
     onError: errorMessageHandler,
   });

@@ -5,7 +5,7 @@ import Login from "./pages/Login.tsx";
 import { TokenResponse } from "@react-oauth/google";
 
 const App = () => {
-  // might need to store somewhere else ...
+  // NOTE might need to store somewhere else ...
   const [bearerToken, setBearerToken] = useState<string | null>(null);
 
   const tokenHandler = (tokenResponse: TokenResponse) => {
