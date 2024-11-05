@@ -1,0 +1,49 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "--build-arg",
+        "VITE_CLIENT_ID=${_VITE_CLIENT_ID}",
+        "-t",
+        "$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY_NAME/$_SERVICE_NAME:latest",
+        ".",
+      ]
+
+  # Push the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY_NAME/$_SERVICE_NAME:latest",
+      ]
+
+  # Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
+    args:
+      [
+        "run",
+        "deploy",
+        "$_SERVICE_NAME",
+        "--image",
+        "$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY_NAME/$_SERVICE_NAME:latest",
+        "--region",
+        "$_REGION",
+        "--platform",
+        "managed",
+        "--allow-unauthenticated",
+        "--set-env-vars",
+        "VITE_CLIENT_ID=${_VITE_CLIENT_ID}",
+      ]
+
+images:
+  - "$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY_NAME/$_SERVICE_NAME:latest"
+
+# IMPORTANT! Please add these values manually when running gcloud
+substitutions:
+  _REGION: ""
+  _REPOSITORY_NAME: ""
+  _SERVICE_NAME: ""
+  _VITE_CLIENT_ID: ""
