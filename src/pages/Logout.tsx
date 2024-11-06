@@ -1,8 +1,5 @@
-import { deleteBearerToken } from "../services/Cookies.service.ts";
-
-const Logout = () => {
-  deleteBearerToken();
-
+const Logout = (props: { deleteBearerTokenHandler: () => void }) => {
+  props.deleteBearerTokenHandler();
   return <>You are logged out!</>;
 };
 
