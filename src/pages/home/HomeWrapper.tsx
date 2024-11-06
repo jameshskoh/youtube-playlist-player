@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
 import Home from "./Home.tsx";
 
-const HomeWrapper = (props: { bearerToken: string | undefined }) => {
-  if (props.bearerToken === undefined) {
+const HomeWrapper = (props: { bearerToken: string | null }) => {
+  if (props.bearerToken === null) {
     return <Navigate to="/login" />;
   }
 

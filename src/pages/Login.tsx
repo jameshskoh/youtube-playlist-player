@@ -1,33 +1,30 @@
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  getBearerToken,
-  saveBearerToken,
-} from "../services/Cookies.service.ts";
 
 const youtubeReadonlyScope = "https://www.googleapis.com/auth/youtube.readonly";
 
-const Login = () => {
+export type LoginProps = {
+  bearerToken: string | null;
+  setBearerTokenHandler: (token: string) => void;
+};
+
+const Login = (props: LoginProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (props.bearerToken !== null) {
+      navigate("/");
+    }
+  }, [navigate, props.bearerToken]);
+
   const loggedInHandler = (tokenResponse: TokenResponse) => {
-    saveBearerToken(tokenResponse.access_token);
-    navigate("/");
+    props.setBearerTokenHandler(tokenResponse.access_token);
   };
 
   const errorMessageHandler = () => {
     setErrorMessage("Failed to login!");
-  };
-
-  const authenticationHandler = () => {
-    if (getBearerToken() !== undefined) {
-      navigate("/");
-      return;
-    }
-
-    login();
   };
 
   const login = useGoogleLogin({
@@ -69,7 +66,7 @@ const Login = () => {
 
         <button
           className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-          onClick={authenticationHandler}
+          onClick={() => login()}
         >
           <svg
             className="h-5 w-5"
