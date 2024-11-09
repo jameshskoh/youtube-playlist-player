@@ -38,7 +38,7 @@ const SideMenu = (props: SideMenuProps) => {
           <h2 className="mx-1 text-2xl font-bold text-gray-900">Player</h2>
         </div>
         <button
-          className="flex items-center justify-center rounded-lg border border-gray-300 px-4 py-2 text-gray-900"
+          className="flex items-center justify-center rounded-lg border border-gray-300 px-4 py-2 text-gray-900 transition-colors duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
           onClick={signOutHandler}
         >
           Sign out
