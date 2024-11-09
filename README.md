@@ -7,7 +7,6 @@ seeing YouTube recommendations and reels at all cost.
 
 ## To-dos
 
-* [ ] Beautify side menu
 * [ ] Beautify login/logout pages
 * [ ] Set up a backend
 * [ ] Add playlist pinning functionality
