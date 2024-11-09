@@ -1,6 +1,7 @@
 import MenuOption from "./menu-option/MenuOption.tsx";
 import { PlaylistResult } from "../../services/Playlists.service.ts";
 import { useNavigate } from "react-router-dom";
+import * as Separator from "@radix-ui/react-separator";
 
 type SideMenuProps = {
   playlistResults: PlaylistResult[];
@@ -43,6 +44,13 @@ const SideMenu = (props: SideMenuProps) => {
         >
           Sign out
         </button>
+      </div>
+      <div>
+        <Separator.Root
+          className="mx-4 my-3 h-[1px] max-w-[calc(100%-2rem)] bg-gray-400"
+          orientation="horizontal"
+          decorative
+        />
       </div>
       {props.playlistResults.map((result) => {
         return (
