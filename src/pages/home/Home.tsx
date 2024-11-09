@@ -6,6 +6,7 @@ import {
 import SideMenu from "../../components/side-menu/SideMenu.tsx";
 import { useState } from "react";
 import YouTubePlayer from "../../components/youtube-player/YouTubePlayer.tsx";
+import LoadingIndicator from "../../components/loading/LoadingIndicator.tsx";
 
 const Home = (props: { bearerToken: string }) => {
   const [playlistId, setPlaylistId] = useState<string | null>(null);
@@ -24,7 +25,11 @@ const Home = (props: { bearerToken: string }) => {
   }
 
   if (isLoading || !playlistResults) {
-    return <>Loading</>;
+    return (
+      <div className="mt-[30vh] flex h-screen w-full flex-col items-center">
+        <LoadingIndicator message="Loading playlists, please wait ..." />
+      </div>
+    );
   }
 
   const pickPlaylistId = () => {
